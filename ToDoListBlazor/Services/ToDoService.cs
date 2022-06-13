@@ -24,7 +24,20 @@ namespace ToDoListBlazor.Services
 
         public void AddTodo(ToDo toDo)
         {
+            toDo.Id = ToDos.Select(t => t.Id).Max() + 1;
+            toDo.Order = ToDos.Select(t => t.Order).Max() + 1;
             ToDos.Add(toDo);
+        }
+
+        internal ToDo GetById(int? todoid)
+        {
+            return ToDos.SingleOrDefault(t => t.Id == todoid);
+        }
+
+        public void UpdateTodo(ToDo toDo)
+        {
+            var todo = GetById(toDo.Id);
+            todo = toDo;
         }
     }
 }

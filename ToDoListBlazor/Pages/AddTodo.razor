@@ -1,0 +1,11 @@
+﻿@page "/addtodo"
+@page "/addtodo/{todoid:int?}"
+
+<h3>Ajouter ou modifier une nouvelle tâche</h3>
+@if (todo != null)
+{
+    <input type="text" @bind-value=todo.TodoLabel />
+    <button class="mt-3" @onclick=AddTodoClick>@(isEdit?"Modifier":"Ajouter")</button>
+}
+
+<a href="/todo">Retour à la liste des Todo</a>

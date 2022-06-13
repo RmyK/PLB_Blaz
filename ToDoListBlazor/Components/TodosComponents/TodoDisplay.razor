@@ -1,18 +1,21 @@
-﻿<div class="d-flex flex-row">
-    <div class="me-2">@todo.Order.</div>
-    <div>
-        @todo.TodoLabel
+﻿<div class="d-flex flex-column">
+    <div class="d-flex flex-row">
+        <div class="me-2">@todo.Order.</div>
+        <div>
+            @todo.TodoLabel
+        </div>
+        <button @onclick=ChangeStatus>
+            @if (todo.IsDone)
+            {
+                <text>To be done</text>
+            }
+            else
+            {
+                <text>Done</text>
+            }
+        </button>
     </div>
-    <button @onclick=ChangeStatus>
-        @if(todo.IsDone)
-        {
-            <text>To be done</text>
-        }
-        else
-        {
-            <text>Done</text>
-        }
-    </button>
+    <a href=@($"/addtodo/{todo.Id}")>Modifier</a>
 </div>
 
 
