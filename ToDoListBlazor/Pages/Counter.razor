@@ -1,0 +1,20 @@
+﻿@page "/counter"
+@using ToDoListBlazor.Components.Demos
+<PageTitle>Counter</PageTitle>
+
+<h1>Counter</h1>
+
+<p role="status">Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+<Counter2 @bind-CounterValue=@currentCount style="border:red 1px solid;" foobar="toot"></Counter2>
+
+@code {
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+}

@@ -1,0 +1,29 @@
+﻿<div @attributes=UnmatcheValue>
+
+    <h2 @ondragover:preventDefault @ondragenter=OnDragEnterCmp> Counter 2</h2>
+    <h3>Current value : @CounterValue</h3>
+    <button @onclick=IncreaveCounterValue>Count 2</button>
+</div>
+
+@code {
+    [Parameter]
+    public int CounterValue { get; set; }
+
+    [Parameter]
+    public EventCallback<int> CounterValueChanged { get; set; }
+
+    [Parameter(CaptureUnmatchedValues =true)]
+    public Dictionary<string, object> UnmatcheValue { get; set; } = new Dictionary<string, object>();
+
+    private async void IncreaveCounterValue()
+    {
+        CounterValue++;
+        await CounterValueChanged.InvokeAsync(CounterValue);
+    }
+
+    private void OnDragEnterCmp()
+    {
+        //todo
+    }
+
+}
