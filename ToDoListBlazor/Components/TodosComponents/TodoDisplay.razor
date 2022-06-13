@@ -3,10 +3,28 @@
     <div>
         @todo.TodoLabel
     </div>
+    <button @onclick=ChangeStatus>
+        @if(todo.IsDone)
+        {
+            <text>To be done</text>
+        }
+        else
+        {
+            <text>Done</text>
+        }
+    </button>
 </div>
 
 
 @code {
     [Parameter]
     public ToDo todo { get; set; }
+
+    [Parameter]
+    public EventCallback<int> StatusChanged { get; set; }
+
+    private async void ChangeStatus()
+    {
+        await StatusChanged.InvokeAsync(todo.Id);
+    }
 }

@@ -9,16 +9,15 @@
         <h5>To Do</h5>
         @foreach (var todo in TodoTobedone.OrderBy(t => t.Order))
         {
-            <TodoDisplay todo=todo></TodoDisplay>
+            <TodoDisplay todo=todo StatusChanged=ChangeTodoStatus></TodoDisplay>
         }
     </div>
     <div class="d-flex flex-column ms-5">
         <h5>Done</h5>
         @foreach (var todo in TodoDone)
         {
-            <TodoDisplay todo=todo></TodoDisplay>
+            <TodoDisplay todo=todo StatusChanged=ChangeTodoStatus></TodoDisplay>
         }
-
     </div>
 </div>
 

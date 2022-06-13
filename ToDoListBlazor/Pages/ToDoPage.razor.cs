@@ -22,5 +22,11 @@ namespace ToDoListBlazor.Pages
         {
             ToDos = toDoService.GetTodos().ToList();
         }
+
+        private void ChangeTodoStatus(int id)
+        {
+            var todo = ToDos.SingleOrDefault(t => t.Id == id);
+            todo.IsDone = !todo.IsDone;
+        }
     }
 }
