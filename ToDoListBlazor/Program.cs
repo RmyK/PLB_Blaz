@@ -10,6 +10,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddSingleton<ToDoService>();
+builder.Services.AddSingleton<UserService>();
 
 var app = builder.Build();
 
