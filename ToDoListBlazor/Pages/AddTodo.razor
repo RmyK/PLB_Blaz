@@ -4,8 +4,14 @@
 <h3>Ajouter ou modifier une nouvelle tâche</h3>
 @if (todo != null)
 {
-    <input type="text" @bind-value=todo.TodoLabel />
-    <button class="mt-3" @onclick=AddTodoClick>@(isEdit?"Modifier":"Ajouter")</button>
+    <EditForm Model=todo OnValidSubmit=AddTodoClick OnInvalidSubmit=InvalidSubmit>
+        <DataAnnotationsValidator/>
+        <ValidationSummary ></ValidationSummary>
+        <InputText @bind-Value=todo.TodoLabel></InputText>
+        <ValidationMessage For=@(()=>todo.TodoLabel)></ValidationMessage>)
+        <button type="submit">Ajouter/Modifier</button>
+    </EditForm>
 }
 
 <a href="/todo">Retour à la liste des Todo</a>
+<button @onclick=@(()=> Nav.NavigateTo("/todo"))>Go to Todo</button>

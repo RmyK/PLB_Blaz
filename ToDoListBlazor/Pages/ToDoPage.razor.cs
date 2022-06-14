@@ -18,6 +18,7 @@ namespace ToDoListBlazor.Pages
         private List<ToDo> TodoDone => ToDos.Where(t => t.IsDone).ToList();
         private ToDo toDoToAddOrEdit;
 
+
         protected override void OnInitialized()
         {
             ToDos = toDoService.GetTodos().ToList();

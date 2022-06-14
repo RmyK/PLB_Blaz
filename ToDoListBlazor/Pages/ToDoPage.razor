@@ -6,10 +6,9 @@
 
 <div class="d-flex flex-row">
     <TodoList T=ToDo Items=@(TodoTobedone.OrderBy(t => t.Order)) Title="To Do">
-        <div class="d-flex flex-column">
+        <AddAction ActionToDo=@(()=>EditTodo(@context)) ButtonText="Edit todo">
             <TodoDisplay @key=@context todo=@context StatusChanged=ChangeTodoStatus></TodoDisplay>
-            <button @onclick=@(()=>EditTodo(@context))>Edit todo</button>
-        </div>
+        </AddAction>
     </TodoList>
     <TodoList T=ToDo Items=@(TodoDone.OrderBy(t => t.Order)) Class="ms-5" Title="Done">
         <div class="d-flex flex-column">

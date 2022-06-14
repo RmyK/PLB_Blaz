@@ -1,0 +1,13 @@
+﻿<div class="d-flex flex-column">
+    @ChildContent
+    <button @onclick=ActionToDo>@ButtonText</button>
+</div>
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+    [Parameter]
+    public EventCallback ActionToDo { get; set; }
+    [Parameter]
+    public string ButtonText { get; set; }
+}
