@@ -5,23 +5,35 @@
 <h3>Liste de chose à faire</h3>
 
 <div class="d-flex flex-row">
-    <div class="d-flex flex-column">
-        <h5>To Do</h5>
-        @foreach (var todo in TodoTobedone.OrderBy(t => t.Order))
-        {
-            <TodoDisplay todo=todo StatusChanged=ChangeTodoStatus></TodoDisplay>
-        }
-    </div>
-    <div class="d-flex flex-column ms-5">
+    <TodoList T=ToDo Items=@(TodoTobedone.OrderBy(t => t.Order)) Title="To Do">
+        <div class="d-flex flex-column">
+            <TodoDisplay @key=@context todo=@context StatusChanged=ChangeTodoStatus></TodoDisplay>
+            <button @onclick=@(()=>EditTodo(@context))>Edit todo</button>
+        </div>
+    </TodoList>
+    <TodoList T=ToDo Items=@(TodoDone.OrderBy(t => t.Order)) Class="ms-5" Title="Done">
+        <div class="d-flex flex-column">
+            <TodoDisplay @key=@context todo=@context StatusChanged=ChangeTodoStatus></TodoDisplay>
+            <button @onclick=@(()=>EditTodo(@context))>Edit todo</button>
+        </div>
+    </TodoList>
+
+    @*    <div class="d-flex flex-column ms-5">
         <h5>Done</h5>
         @foreach (var todo in TodoDone)
         {
-            <TodoDisplay todo=todo StatusChanged=ChangeTodoStatus></TodoDisplay>
+        <div class="d-flex flex-column">
+        <TodoDisplay @key=todo todo=todo StatusChanged=ChangeTodoStatus></TodoDisplay>
+        <button @onclick=@(()=>EditTodo(todo))>Edit todo</button>
+        </div>
         }
-    </div>
+        </div>*@
 </div>
 
 <a href="/addtodo">Ajouter un todo</a>
+
+<AddOrEditTodo @bind-Todo=toDoToAddOrEdit SaveTodoCallback=SaveTodo></AddOrEditTodo>
+<button @onclick=AjouterTodo>Nouveau Todo</button>
 
 @if (TodoId != null)
 {

@@ -1,0 +1,28 @@
+﻿@if (Todo != null)
+{
+    <div>
+        <h3>Ajouter ou modifier une nouvelle tâche</h3>
+        @if (Todo != null)
+        {
+            <input type="text" @bind-value=Todo.TodoLabel />
+            <button class="mt-3" @onclick=SaveTodo>@(isEdit?"Modifier":"Ajouter")</button>
+        }
+    </div>
+}
+
+@code {
+
+    [Parameter]
+    public ToDo Todo { get; set; }
+    [Parameter]
+    public EventCallback<ToDo> TodoChanged { get; set; }
+    [Parameter]
+    public EventCallback SaveTodoCallback { get; set; }
+    private bool isEdit => Todo.Id == 0;
+
+    private async void SaveTodo()
+    {
+        await TodoChanged.InvokeAsync(Todo);
+        await SaveTodoCallback.InvokeAsync();
+    }
+}
