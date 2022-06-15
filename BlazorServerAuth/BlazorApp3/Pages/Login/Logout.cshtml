@@ -1,0 +1,11 @@
+﻿@page "/logout"
+@using Microsoft.AspNetCore.Authentication
+@attribute [IgnoreAntiforgeryToken]
+@functions{
+    public async Task<IActionResult> OnPost()
+    {
+        await HttpContext.SignOutAsync();
+
+        return Redirect("~/");
+    }
+}

@@ -1,0 +1,40 @@
+﻿@using BlazorWASMAuth.Client.Authentication
+@using BlazorWASMAuth.Shared
+@using Microsoft.AspNetCore.Components.Authorization
+
+<AuthorizeView>
+    <Authorized>
+        <h1>Hello, @context.User.Identity.Name!</h1>
+        <p>You can only see this content if you're authenticated.</p>
+    </Authorized>
+
+    <NotAuthorized>
+        <EditForm Model="@login" OnValidSubmit=@Login>
+            <ChildContent Context="LoginForm">
+                <label>Login</label>
+                <InputText @bind-Value=login.Login></InputText>
+                <label>Password</label>
+                <InputText type="password" @bind-Value=login.Password></InputText>
+                <button type="submit">Submit</button>
+            </ChildContent>
+        </EditForm>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    [Inject] HttpClient http { get; set; }
+    [Inject] JwtAuthenticationStateProvider StateProvider { get; set; }
+
+    private LoginDTO login { get; set; } = new LoginDTO();
+
+
+    private async void Login()
+    {
+        var result = await http.PostAsJsonAsync("/Login", login);
+        if (result.IsSuccessStatusCode)
+        {
+            var response = await result.Content.ReadFromJsonAsync<LoginResponse>();
+            StateProvider.Login(response.Token);
+        }
+    }
+}

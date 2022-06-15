@@ -16,6 +16,7 @@
         </button>
     </div>
     <a href=@($"/addtodo/{todo.Id}")>Modifier</a>
+    <button class="btn btn-primary" @onclick=EditLabel><i class="oi-pencil"></i></button>
 </div>
 
 
@@ -26,8 +27,18 @@
     [Parameter]
     public EventCallback<int> StatusChanged { get; set; }
 
+    [Inject]
+    private IJSRuntime JS { get; set; }
+
     private async void ChangeStatus()
     {
         await StatusChanged.InvokeAsync(todo.Id);
+    }
+
+    public async void EditLabel()
+    {
+        var res = await JS.InvokeAsync<string>("setTodoLabel", todo.TodoLabel);
+        todo.TodoLabel = res;
+        await InvokeAsync(StateHasChanged);
     }
 }
