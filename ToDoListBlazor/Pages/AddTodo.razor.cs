@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using DataAccess.Services;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Routing;
-using ToDoListBlazor.DataModels;
-using ToDoListBlazor.Services;
 
 namespace ToDoListBlazor.Pages
 {

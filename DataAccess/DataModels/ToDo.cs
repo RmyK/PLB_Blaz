@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ToDoListBlazor.DataModels
+namespace DataAccess.DataModels
 {
     public class ToDo
     {

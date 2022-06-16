@@ -1,5 +1,8 @@
-﻿@inherits LayoutComponentBase
-
+﻿@using ToDoListBlazor.Services.MsgService
+@inherits LayoutComponentBase
+@implements IListener<UserChanged>
+@implements IDisposable
+@inject MessageService msgSrv
 <PageTitle>ToDoListBlazor2</PageTitle>
 
 <div class="page">
@@ -9,6 +12,10 @@
 
     <main>
         <div class="top-row px-4">
+            @if (currentUser != null)
+            {
+                <div>@currentUser.Nom @currentUser.Prenom</div>
+            }
             <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
         </div>
 
@@ -17,3 +24,25 @@
         </article>
     </main>
 </div>
+
+@code {
+    private User currentUser;
+
+    protected override void OnInitialized()
+    {
+        msgSrv.Subscribe(this);
+    }
+
+    public async Task Handle(UserChanged signal)
+    {
+        currentUser = signal.NewUser;
+        await InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        msgSrv.Unsubscribe(this);
+
+    }
+
+}

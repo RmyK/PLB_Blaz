@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using ToDoListBlazor.DataModels;
+﻿using DataAccess.DataModels;
+using System.ComponentModel.DataAnnotations;
 
 namespace ToDoListBlazor.Pages
 {

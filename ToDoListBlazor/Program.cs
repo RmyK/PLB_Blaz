@@ -1,8 +1,7 @@
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
+using DataAccess.Services;
+using DataAccess.Services.DataAcces;
+using DataAccess.Services.MsgService;
 using ToDoListBlazor.Data;
-using ToDoListBlazor.Services;
-using ToDoListBlazor.Services.DataAcces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +12,7 @@ builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddSingleton<ToDoService>();
 builder.Services.AddSingleton<UserService>();
 builder.Services.AddSingleton<Repository>();
+builder.Services.AddSingleton<MessageService>();
 
 var app = builder.Build();
 

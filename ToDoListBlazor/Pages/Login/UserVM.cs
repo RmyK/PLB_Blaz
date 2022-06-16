@@ -1,6 +1,6 @@
-﻿using ToDoListBlazor.DataModels;
+﻿using DataAccess.DataModels;
 
-namespace ToDoListBlazor.Pages.Utilisateur
+namespace ToDoListBlazor.Pages.Login
 {
     public class UserVM
     {

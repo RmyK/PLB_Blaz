@@ -1,38 +1,56 @@
 ﻿@page "/todo"
 @page "/todo/{TodoId:int?}"
+@using DataAccess.DataModels
 @using ToDoListBlazor.Components.TodosComponents
 
 <h3>Liste de chose à faire</h3>
-
-<div class="d-flex flex-row">
-    <TodoList T=ToDo Items=@(TodoTobedone.OrderBy(t => t.Order)) Title="To Do">
-        <AddAction ActionToDo=@(()=>EditTodo(@context)) ButtonText="Edit todo">
-            <TodoDisplay @key=@context todo=@context StatusChanged=ChangeTodoStatus></TodoDisplay>
-        </AddAction>
-    </TodoList>
-    <TodoList T=ToDo Items=@(TodoDone.OrderBy(t => t.Order)) Class="ms-5" Title="Done">
-        <div class="d-flex flex-column">
-            <TodoDisplay @key=@context todo=@context StatusChanged=ChangeTodoStatus></TodoDisplay>
-            <button @onclick=@(()=>EditTodo(@context))>Edit todo</button>
-        </div>
-    </TodoList>
-
-    @*    <div class="d-flex flex-column ms-5">
-        <h5>Done</h5>
-        @foreach (var todo in TodoDone)
+<div class="d-flex flex-column">
+    <div class="d-flex flex-row mb-3">
+        @foreach (var lst in TodoLists.OrderBy(t => t.Order))
         {
-        <div class="d-flex flex-column">
-        <TodoDisplay @key=todo todo=todo StatusChanged=ChangeTodoStatus></TodoDisplay>
-        <button @onclick=@(()=>EditTodo(todo))>Edit todo</button>
-        </div>
+            <TodoList T=ToDo Items=@(lst.ToDos.OrderBy(t => t.Order)) Title=@lst.Title>
+                <AddAction ActionToDo=@(()=>EditTodo(@context)) ButtonText="Edit todo">
+                    <TodoDisplay @key=@context todo=@context StatusChanged=ChangeTodoStatus></TodoDisplay>
+                </AddAction>
+            </TodoList>
         }
-        </div>*@
+@*        <TodoList T=ToDo Items=@(TodoTobedone.OrderBy(t => t.Order)) Title="To Do">
+            <AddAction ActionToDo=@(()=>EditTodo(@context)) ButtonText="Edit todo">
+                <TodoDisplay @key=@context todo=@context StatusChanged=ChangeTodoStatus></TodoDisplay>
+            </AddAction>
+        </TodoList>
+        <TodoList T=ToDo Items=@(TodoDone.OrderBy(t => t.Order)) Class="ms-5" Title="Done">
+            <div class="d-flex flex-column">
+                <TodoDisplay @key=@context todo=@context StatusChanged=ChangeTodoStatus></TodoDisplay>
+                <button @onclick=@(()=>EditTodo(@context))>Edit todo</button>
+            </div>
+        </TodoList>
+*@
+        @*    <div class="d-flex flex-column ms-5">
+            <h5>Done</h5>
+            @foreach (var todo in TodoDone)
+            {
+            <div class="d-flex flex-column">
+            <TodoDisplay @key=todo todo=todo StatusChanged=ChangeTodoStatus></TodoDisplay>
+            <button @onclick=@(()=>EditTodo(todo))>Edit todo</button>
+            </div>
+            }
+            </div>*@
+    </div>
+
+    <a href="/addtodo">Ajouter un todo</a>
+
+    <AddOrEditTodo @bind-Todo=toDoToAddOrEdit SaveTodoCallback=SaveTodo></AddOrEditTodo>
+    <button @onclick=AjouterTodo>Nouveau Todo</button>
+    <button class="btn btn-outline-secondary" @onclick=AddTodoListBtnClick>Ajoute une liste</button>
+    @if(isAddingList)
+    {
+    <div class="d-flex flex-row">
+        <input type="text" @bind-value=newToDoListLabel class="form-control" style="width:250px" />
+        <button class="btn btn-outline-info" @onclick=AddTodoList>Ajouter</button>
+    </div>
+    }
 </div>
-
-<a href="/addtodo">Ajouter un todo</a>
-
-<AddOrEditTodo @bind-Todo=toDoToAddOrEdit SaveTodoCallback=SaveTodo></AddOrEditTodo>
-<button @onclick=AjouterTodo>Nouveau Todo</button>
 
 @if (TodoId != null)
 {

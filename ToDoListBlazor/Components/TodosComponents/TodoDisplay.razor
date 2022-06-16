@@ -1,10 +1,13 @@
-﻿<div class="d-flex flex-column">
+﻿<div class="d-flex flex-column p-2" style="border-radius:0.25em;border:1px solid black;background-color:white">
     <div class="d-flex flex-row">
         <div class="me-2">@todo.Order.</div>
         <div>
             @todo.TodoLabel
         </div>
-        <button @onclick=ChangeStatus>
+
+    </div>
+    <div class="d-flex flex-row mt-2 align-items-center">
+        <button class="btn btn-primary me-2" @onclick=ChangeStatus>
             @if (todo.IsDone)
             {
                 <text>To be done</text>
@@ -14,9 +17,9 @@
                 <text>Done</text>
             }
         </button>
+        <a class="me-2" href=@($"/addtodo/{todo.Id}")>Modifier</a>
+        <button class="btn btn-primary" style="width:50px;" @onclick=EditLabel><i class="oi oi-pencil"></i></button>
     </div>
-    <a href=@($"/addtodo/{todo.Id}")>Modifier</a>
-    <button class="btn btn-primary" @onclick=EditLabel><i class="oi-pencil"></i></button>
 </div>
 
 

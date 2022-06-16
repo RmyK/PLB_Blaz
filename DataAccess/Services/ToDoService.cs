@@ -1,12 +1,12 @@
-﻿using ToDoListBlazor.DataModels;
-using ToDoListBlazor.Services.DataAcces;
+﻿using DataAccess.DataModels;
+using DataAccess.Services.DataAcces;
 
-namespace ToDoListBlazor.Services
+namespace DataAccess.Services
 {
     public class ToDoService
     {
         private readonly Repository repo;
-        public ToDoService( Repository repository)
+        public ToDoService(Repository repository)
         {
             repo = repository;
         }
@@ -16,12 +16,17 @@ namespace ToDoListBlazor.Services
             return repo.GetAll<ToDo>();
         }
 
+        public IEnumerable<ToDo> GetTodoByUserId(int id)
+        {
+            return repo.Where<ToDo>(t => t.UserId == id);
+        }
+
         public void AddTodo(ToDo toDo)
         {
             repo.Insert(toDo);
         }
 
-        internal ToDo GetById(int? todoid)
+        public ToDo GetById(int? todoid)
         {
             return GetTodos().SingleOrDefault(t => t.Id == todoid);
         }

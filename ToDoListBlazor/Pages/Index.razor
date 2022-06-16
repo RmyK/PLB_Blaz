@@ -1,69 +1,95 @@
 ﻿@page "/"
+@using ToDoListBlazor.Pages.Exceptions
+@using ToDoListBlazor.Pages.Login
+@using ToDoListBlazor.Services
+@using ToDoListBlazor.Services.MsgService
+@inject UserService usrSrv
+@inject NavigationManager Nav
+@inject MessageService msgSrv
 
-@using ToDoListBlazor.Components.Demos
-
-<PageTitle>Index</PageTitle>
-
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
-
-<FoobarComponent />
-<Foobar2Component></Foobar2Component>
-<DisplayStringComponent MaString="Hello, je suis une nouvelle chaine de charactères"></DisplayStringComponent>
-
-<div class="d-flex flex-column">
-    <div>
-        <input @bind-value=messageToDisplay></input>
-        <button @onclick=DisplayMessage>Afficher message</button>
+<h3 class="mb-4">
+    Bonjour et bienvenu sur TodoApp !
+</h3>
+<EditForm EditContext=editContext OnValidSubmit=SubmitCredential>
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="d-flex flex-row mb-2 align-items-center">
+        <label class="me-3">Nom :</label>
+        <InputText class="form-control" @bind-Value=user.Nom />
     </div>
-    @if (isOk)
+    <div class="d-flex flex-row mb-2 align-items-center">
+        <label class="me-3">Prénom :</label>
+        <InputText class="form-control" @bind-Value=user.Prenom />
+    </div>
+    @if (isRegister)
     {
-        <span>Vous êtes d'accord</span>
+        <div class="d-flex flex-row mb-2 align-items-center">
+            <label class="me-3">Prénom :</label>
+            <InputDate class="form-control" @bind-Value=user.DateNaissance />
+        </div>
     }
-    else
+    <button class="btn btn-primary" type="submit">@(isRegister?"Enregistrer":"Login")</button>
+    @if (hasError)
     {
-        <span>Vous N'êtes PAS d'accord</span>
+        <span class="text-warning">@errorMessage</span>
+    }
+</EditForm>
+<button class="nav-link btn btn-link" @onclick=SwitchState>Je ne possède pas encore de compte</button>
+
+<style>
+    label {
+        white-space: nowrap;
+        width: 100px;
     }
 
-    <button @onclick=GetData>GetData</button>
-    <span>@jsValue</span>
-    <button @onclick=SetToREd>Set to Red</button>
-    <div @ref=redDiv style="background-color:blue;width:50px;height:50px;"></div>
-</div>
-
+    .form-control {
+        width: 250px;
+    }
+</style>
 
 @code {
-    [Inject] IJSRuntime JS { get; set; }
-    private string messageToDisplay;
+    private bool isRegister;
+    private UserVM user = new UserVM();
+    private bool hasError;
+    private string errorMessage;
+    private EditContext editContext;
 
-    private bool isOk;
-
-    private string jsValue;
-    private ElementReference redDiv;
-
-    private async void DisplayMessage()
+    protected override void OnInitialized()
     {
-        var res = await JS.InvokeAsync<bool>("displaymessage", messageToDisplay);
-        isOk = res;
-        await InvokeAsync(StateHasChanged);
+        editContext = new EditContext(user);
     }
 
-    [JSInvokable]
-    public async void AddText(string value)
+    private void SubmitCredential()
     {
-        jsValue = value;
-        await InvokeAsync(StateHasChanged);
+        try
+        {
+            hasError = false;
+            errorMessage = string.Empty;
+            //bool res = true;
+            if (isRegister)
+                usrSrv.AddUser(user.model);
+            else
+                usrSrv.SetUser(user.Nom, user.Prenom);
+            //res = usrSrv.SetUser(user.Nom, user.Prenom);
+            //if (res)
+            msgSrv.Publish(new UserChanged(user.model));
+            Nav.NavigateTo("/todo");
+            //else
+            //{
+            //hasError = true;
+            //errorMessage = "Impossible d'authentifier cette utilisateur";
+            //}
+
+        }
+        catch (LoginException ex)
+        {
+            hasError = true;
+            errorMessage = ex.Message;
+        }
     }
 
-    public async void GetData()
+    private void SwitchState()
     {
-        var dotNetObject = DotNetObjectReference.Create(this);
-        await JS.InvokeVoidAsync("getdata", dotNetObject);
-    }
-
-    public async void SetToREd()
-    {
-        await JS.InvokeVoidAsync("changecolor", redDiv, "red");
+        isRegister = !isRegister;
     }
 }
