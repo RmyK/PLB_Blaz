@@ -1,0 +1,45 @@
+﻿@page "/todo"
+@using ToDoListWASM.Shared.DTOs
+
+@inject HttpClient http
+
+<div class="d-flex flex-column">
+
+    @if (todos != null)
+    {
+        @foreach (var todo in todos)
+        {
+            <div class="d-flex flex-row">
+                <div class="me-2">@todo.Order.</div>
+                <div>
+                    @todo.TodoLabel
+                </div>
+
+            </div>
+        }
+    }
+    else
+    {
+        <div class="alert-info">Chargement...</div>
+    }
+</div>
+
+@code {
+    private TodoDTO[] todos;
+
+    protected async override Task OnParametersSetAsync()
+    {
+        todos = await http.GetFromJsonAsync<TodoDTO[]>("/api/todo/getall");
+
+        HttpResponseMessage res = await http.PostAsJsonAsync("/api/todo", new TodoDTO() {Id=1, TodoLabel = "new Todo", UserId = 1, Order = 6 });
+        if (res.IsSuccessStatusCode)
+        {
+            var obj = await res.Content.ReadFromJsonAsync<bool>();
+
+        }
+        else
+        {
+            var obj = await res.Content.ReadFromJsonAsync<(string statusCode, string detail, string traceId)>();
+        }
+    }
+}
