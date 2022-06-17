@@ -1,4 +1,4 @@
-name: TodoList
+name: PLB_Blaz
 
 # Run workflow on every push to the master branch
 on:
@@ -18,9 +18,9 @@ jobs:
         dotnet-version: 6.0.x
     - run: dotnet publish ToDoListWASM/ToDoListWASM.sln -c Release -o release --nologo
     
-    # changes the base-tag in index.html from '/' to 'DemoApp' to match GitHub Pages repository subdirectory
-    - name: Change base-tag in index.html from / to DemoApp
-      run: sed -i 's/<base href="\/" \/>/<base href="\/DemoApp\/" \/>/g' release/wwwroot/index.html
+    # changes the base-tag in index.html from '/' to 'PLB_Blaz' to match GitHub Pages repository subdirectory
+    - name: Change base-tag in index.html from / to PLB_Blaz
+      run: sed -i 's/<base href="\/" \/>/<base href="\/PLB_Blaz\/" \/>/g' release/wwwroot/index.html
     
     # copy index.html to 404.html to serve the same file when a file is not found
     - name: copy index.html to 404.html
